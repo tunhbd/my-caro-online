@@ -1,0 +1,15 @@
+.caro-game__board__row__col {
+  width: 30px;
+  height: 30px;
+  margin: 1px;
+  background: #CCCCCC;
+  cursor: pointer;
+  color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.caro-game__board__row__col:hover {
+  background: #F4F4F4;
+}
