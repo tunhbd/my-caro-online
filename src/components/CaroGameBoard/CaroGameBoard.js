@@ -3,21 +3,21 @@ import CaroGameBoardRow from '../CaroGameBoardRow/CaroGameBoardRow';
 import './CaroGameBoard.styles.css';
 
 export default function CaroGameBoard(props) {
-  const { rowCount, colCount, isPlaying, fillCol, board } = props;
+  const { rowCount, colCount, isPlaying, chooseCell, board } = props;
 
   const renderBoardRows = () => {
     let rows = null;
 
-    for (let row = 1; row <= rowCount; row++) {
+    for (let rowOrder = 0; rowOrder < rowCount; rowOrder++) {
       rows = (
         <React.Fragment>
           {rows}
           <CaroGameBoardRow
             colCount={colCount}
-            row={row}
+            rowOrder={rowOrder}
             isPlaying={isPlaying}
-            board={board}
-            fillCol={fillCol}
+            row={board[rowOrder]}
+            chooseCell={chooseCell}
           />
         </React.Fragment>
       )

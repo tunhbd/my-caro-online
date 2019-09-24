@@ -5,6 +5,7 @@ export default function CaroGamePrepare(props) {
   const XPlayerIcon = '/images/caro-x.jpg';
   const OPlayerIcon = '/images/caro-o.jpg';
   const logo = '/images/caro-logo.jpg';
+
   return (
     <div className={props.className}>
       <div className="logo">
@@ -50,8 +51,7 @@ export default function CaroGamePrepare(props) {
         <button
           className="restart-button"
           onClick={() => {
-            props.setInitBoard(false);
-            props.setCurrentPlayer('X');
+            props.restartGame();
           }}
         >
           restart
@@ -60,10 +60,10 @@ export default function CaroGamePrepare(props) {
           className={`play-button ${props.isPlaying ? 'stop' : ''}`}
           onClick={() => {
             if (!props.isPlaying) {
-              props.setInitBoard(false)
+              props.restartGame();
+            } else {
+              props.stopGame();
             }
-            props.setCurrentPlayer(props.isPlaying ? null : 'X');
-            props.setStatusMatch(!props.isPlaying);
           }}
         >
           {props.isPlaying ? 'Stop' : 'Play'}
