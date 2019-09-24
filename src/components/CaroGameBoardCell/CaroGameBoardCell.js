@@ -2,7 +2,7 @@ import React from 'react';
 import './CaroGameBoardCell.styles.css';
 
 export default function CaroGameBoardCell(props) {
-  const { rowOrder, colOrder, isPlaying, chooseCell, cell } = props;
+  const { rowOrder, colOrder, isPlaying, chooseCell, cell, result } = props;
 
   const onClickOnCell = () => {
     if (isPlaying) {
@@ -12,9 +12,13 @@ export default function CaroGameBoardCell(props) {
     }
   }
 
+  const inResult = () => {
+    return result.findIndex(cell => cell.x === rowOrder && cell.y === colOrder) > -1;
+  }
+
   return (
     <div
-      className="caro-game__board__row__col"
+      className={`caro-game__board__row__col ${inResult() ? 'is-result' : ''}`}
       onClick={onClickOnCell}
     >
       {cell ? cell : null}

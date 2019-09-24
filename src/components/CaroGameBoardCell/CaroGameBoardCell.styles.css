@@ -10,6 +10,10 @@
   align-items: center;
 }
 
+.caro-game__board__row__col.is-result {
+  background: yellow;
+}
+
 .caro-game__board__row__col:hover {
   background: #F4F4F4;
 }

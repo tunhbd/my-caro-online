@@ -3,7 +3,7 @@ import CaroGameBoardRow from '../CaroGameBoardRow/CaroGameBoardRow';
 import './CaroGameBoard.styles.css';
 
 export default function CaroGameBoard(props) {
-  const { rowCount, colCount, isPlaying, chooseCell, board } = props;
+  const { rowCount, colCount, isPlaying, chooseCell, board, result } = props;
 
   const renderBoardRows = () => {
     let rows = null;
@@ -16,6 +16,7 @@ export default function CaroGameBoard(props) {
             colCount={colCount}
             rowOrder={rowOrder}
             isPlaying={isPlaying}
+            result={result}
             row={board[rowOrder]}
             chooseCell={chooseCell}
           />

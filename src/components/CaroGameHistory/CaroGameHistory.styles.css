@@ -12,6 +12,11 @@
   cursor: pointer;
   background: rgba(0, 0, 0, 0.1);
   text-align: center;
+  margin: 5px 0px;
+}
+
+.history__item.current {
+  background: green;
 }
 
 .history__item:hover {
