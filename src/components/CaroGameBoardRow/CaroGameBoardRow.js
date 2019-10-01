@@ -8,9 +8,9 @@ export default function CaroGameBoardRow(props) {
   const renderBoardCols = () => {
     let cols = null;
 
-    for (let colOrder = 0; colOrder < colCount; colOrder++) {
+    for (let colOrder = 0; colOrder < colCount; colOrder += 1) {
       cols = (
-        <React.Fragment>
+        <>
           {cols}
           <CaroGameBoardCell
             rowOrder={rowOrder}
@@ -20,16 +20,12 @@ export default function CaroGameBoardRow(props) {
             cell={row[colOrder]}
             chooseCell={chooseCell}
           />
-        </React.Fragment>
+        </>
       );
     }
 
     return cols;
-  }
+  };
 
-  return (
-    <div className='caro-game__board__row'>
-      {renderBoardCols()}
-    </div>
-  );
+  return <div className="caro-game__board__row">{renderBoardCols()}</div>;
 }
