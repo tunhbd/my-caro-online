@@ -23,6 +23,5 @@
     "FileReader": true,
     "Blob": true,
     "navigator": true
-  },
-  "parser": "babel-eslint"
+  }
 }
