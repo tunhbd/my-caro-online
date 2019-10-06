@@ -1,25 +1,39 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { get } from 'lodash';
 import CaroGamePrepare from '../CaroGamePrepare/CaroGamePrepare';
 import CaroGameBoard from '../CaroGameBoard/CaroGameBoard';
 import CaroGameHistory from '../CaroGameHistory/CaroGameHistory';
 import { cloneBoard } from '../../utils/clone-board';
 import './CaroGame.styles.css';
+import * as reduxActions from '../../actions';
 
-export default function CaroGame(props) {
-  const [XPlayer, setXPlayer] = useState(null);
-  const [OPlayer, setOPlayer] = useState(null);
-  const [winner, setWinner] = useState(null);
-  const [result, setResult] = useState([]);
-  const [isPlaying, setStatusMatch] = useState(false);
-  const [currentPlayer, setCurrentPlayer] = useState(null);
-  const [boardStates, setBoardStates] = useState([]);
-  const [currentBoardState, setCurrentBoardState] = useState({
-    boardOrder: -1,
-    player: null
-  });
+function CaroGame(props) {
+  // const [XPlayer, setXPlayer] = useState(null);
+  // const [OPlayer, setOPlayer] = useState(null);
+  // const [winner, setWinner] = useState(null);
+  // const [result, setResult] = useState([]);
+  // const [isPlaying, setStatusMatch] = useState(false);
+  // const [currentPlayer, setCurrentPlayer] = useState(null);
+  // const [boardStates, setBoardStates] = useState([]);
+  // const [currentBoardState, setCurrentBoardState] = useState({
+  //   boardOrder: -1,
+  //   player: null
+  // });
   const [boardIsInited, notifyBoardIdInited] = useState(false);
 
-  const { rowCount, colCount } = props;
+  const {
+    rowCount,
+    colCount,
+    winner,
+    actions,
+    boardStates,
+    currentBoardState,
+    currentPlayer,
+    XPlayer,
+    OPlayer
+  } = props;
 
   const initBoard = (rowNum, colNum) => {
     const board = [];
@@ -34,7 +48,7 @@ export default function CaroGame(props) {
       board.push(row);
     }
 
-    setBoardStates([
+    actions.setBoardStates([
       {
         cell: {
           rowOrder: null,
@@ -45,7 +59,7 @@ export default function CaroGame(props) {
       }
     ]);
 
-    setCurrentBoardState({
+    actions.setCurrentBoardState({
       boardOrder: 0,
       player: null
     });
@@ -129,7 +143,7 @@ export default function CaroGame(props) {
       xx => xx < rowCount
     );
     if (checkresponse(response)) {
-      setResult(response.result);
+      actions.setResult(response.result);
       won = true;
     } else {
       response = countFollow(
@@ -144,7 +158,7 @@ export default function CaroGame(props) {
         (xx, yy) => yy < colCount
       );
       if (checkresponse(response)) {
-        setResult(response.result);
+        actions.setResult(response.result);
         won = true;
       } else {
         response = countFollow(
@@ -159,7 +173,7 @@ export default function CaroGame(props) {
           (xx, yy) => xx < rowCount && yy < colCount
         );
         if (checkresponse(response)) {
-          setResult(response.result);
+          actions.setResult(response.result);
           won = true;
         } else {
           response = countFollow(
@@ -174,7 +188,7 @@ export default function CaroGame(props) {
             (xx, yy) => xx < rowCount && yy > -1
           );
           if (checkresponse(response)) {
-            setResult(response.result);
+            actions.setResult(response.result);
             won = true;
           }
         }
@@ -185,11 +199,11 @@ export default function CaroGame(props) {
   };
 
   const changePlayer = player => {
-    setCurrentPlayer(player);
+    actions.setCurrentPlayer(player);
   };
 
   const stopGame = () => {
-    setStatusMatch(false);
+    actions.setStatusMatch(false);
   };
 
   const chooseCell = (x, y) => {
@@ -197,7 +211,7 @@ export default function CaroGame(props) {
     board[x][y] = currentPlayer;
 
     if (currentBoardState.boardOrder + 1 < boardStates.length) {
-      setBoardStates([
+      actions.setBoardStates([
         ...boardStates.slice(0, currentBoardState.boardOrder + 1),
         {
           board,
@@ -209,7 +223,7 @@ export default function CaroGame(props) {
         }
       ]);
     } else {
-      setBoardStates([
+      actions.setBoardStates([
         ...boardStates,
         {
           board,
@@ -222,35 +236,35 @@ export default function CaroGame(props) {
       ]);
     }
 
-    setCurrentBoardState({
+    actions.setCurrentBoardState({
       boardOrder: currentBoardState.boardOrder + 1,
       player: currentPlayer
     });
 
     if (isWinner(board, x, y)) {
       stopGame();
-      setWinner(currentPlayer);
+      actions.setWinner(currentPlayer);
     } else {
       changePlayer(currentPlayer === 'X' ? 'O' : 'X');
     }
   };
 
   const startGame = () => {
-    setResult([]);
+    actions.setResult([]);
     initBoard(rowCount, colCount);
-    setStatusMatch(true);
-    setCurrentPlayer('X');
+    actions.setStatusMatch(true);
+    actions.setCurrentPlayer('X');
   };
 
   const restartGame = () => {
-    setResult([]);
-    setBoardStates([]);
+    actions.setResult([]);
+    actions.setBoardStates([]);
     initBoard(rowCount, colCount);
     startGame();
   };
 
   const switchBoardState = stateOrder => {
-    setCurrentBoardState({ boardOrder: stateOrder });
+    actions.setCurrentBoardState({ boardOrder: stateOrder });
     changePlayer(boardStates[stateOrder].player === 'X' ? 'O' : 'X');
   };
 
@@ -263,12 +277,6 @@ export default function CaroGame(props) {
       <div className="caro-game">
         <CaroGamePrepare
           className="caro-game__prepare"
-          setXPlayer={setXPlayer}
-          setOPlayer={setOPlayer}
-          isPlaying={isPlaying}
-          XPlayer={XPlayer}
-          OPlayer={OPlayer}
-          currentPlayer={currentPlayer}
           startGame={startGame}
           stopGame={stopGame}
           restartGame={restartGame}
@@ -277,19 +285,10 @@ export default function CaroGame(props) {
           className="caro-game__board"
           rowCount={rowCount}
           colCount={colCount}
-          isPlaying={isPlaying}
-          result={result}
-          board={
-            boardStates[currentBoardState.boardOrder]
-              ? boardStates[currentBoardState.boardOrder].board
-              : []
-          }
           chooseCell={chooseCell}
         />
         <CaroGameHistory
           className="caro-game__history"
-          boardStates={boardStates}
-          currentBoardState={currentBoardState}
           switchBoardState={switchBoardState}
         />
       </div>
@@ -299,7 +298,7 @@ export default function CaroGame(props) {
             <span>
               Congratulate!!! {winner === 'X' ? XPlayer : OPlayer} won.
             </span>
-            <button type="button" onClick={() => setWinner(null)}>
+            <button type="button" onClick={() => actions.setWinner(null)}>
               Ok
             </button>
           </div>
@@ -308,3 +307,33 @@ export default function CaroGame(props) {
     </>
   );
 }
+
+const mapStateToProps = state => ({
+  XPlayer: get(state, 'XPlayer'),
+  OPlayer: get(state, 'OPlayer'),
+  winner: get(state, 'winner'),
+  boardStates: get(state, 'boardStates'),
+  currentBoardState: get(state, 'currentBoardState'),
+  currentPlayer: get(state, 'currentPlayer')
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(
+      {
+        setWinner: reduxActions.setWinner,
+        setBoardStates: reduxActions.setBoardStates,
+        setCurrentBoardState: reduxActions.setCurrentBoardState,
+        setResult: reduxActions.setResult,
+        setStatusMatch: reduxActions.setStatusMatch,
+        setCurrentPlayer: reduxActions.setCurrentPlayer
+      },
+      dispatch
+    )
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CaroGame);

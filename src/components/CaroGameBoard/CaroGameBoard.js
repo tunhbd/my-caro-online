@@ -1,17 +1,22 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 import CaroGameBoardRow from '../CaroGameBoardRow/CaroGameBoardRow';
 import './CaroGameBoard.styles.css';
 
-export default function CaroGameBoard(props) {
+function CaroGameBoard(props) {
   const {
     rowCount,
     colCount,
-    isPlaying,
     chooseCell,
-    board,
-    result,
+    boardStates,
+    currentBoardState,
     className
   } = props;
+
+  const board = boardStates[currentBoardState.boardOrder]
+    ? boardStates[currentBoardState.boardOrder].board
+    : [];
 
   const renderBoardRows = () => {
     let rows = null;
@@ -23,8 +28,6 @@ export default function CaroGameBoard(props) {
           <CaroGameBoardRow
             colCount={colCount}
             rowOrder={rowOrder}
-            isPlaying={isPlaying}
-            result={result}
             row={board[rowOrder]}
             chooseCell={chooseCell}
           />
@@ -41,3 +44,13 @@ export default function CaroGameBoard(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  boardStates: get(state, 'boardStates'),
+  currentBoardState: get(state, 'currentBoardState')
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(CaroGameBoard);

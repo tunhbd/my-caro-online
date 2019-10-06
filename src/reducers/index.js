@@ -29,7 +29,7 @@ const reducers = (state, { type, payload }) => {
     case actionTypes.SET_CURRENT_PLAYER:
       return {
         ...state,
-        currentPlayer: payload.currentPlayer
+        currentPlayer: payload.player
       };
     case actionTypes.SET_BOARD_STATES:
       return {

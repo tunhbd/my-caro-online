@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 import './CaroGameBoardCell.styles.css';
 
-export default function CaroGameBoardCell(props) {
+function CaroGameBoardCell(props) {
   const { rowOrder, colOrder, isPlaying, chooseCell, cell, result } = props;
 
   const onClickOnCell = () => {
@@ -32,3 +34,13 @@ export default function CaroGameBoardCell(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  isPlaying: get(state, 'isPlaying'),
+  result: get(state, 'result')
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(CaroGameBoardCell);

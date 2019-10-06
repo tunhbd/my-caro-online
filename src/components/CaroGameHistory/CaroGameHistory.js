@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 import './CaroGameHistory.styles.css';
 
-export default function CaroGameHistory(props) {
-  const { boardStates, className } = props;
+function CaroGameHistory(props) {
+  const { boardStates, className, switchBoardState, currentBoardState } = props;
   const [ascSort, sortAsc] = useState(true);
   const boardStateCount = boardStates.length;
 
@@ -32,13 +34,13 @@ export default function CaroGameHistory(props) {
                 key={ascSort ? index : boardStateCount - 1 - index}
                 className={`history__item ${
                   (ascSort ? index : boardStateCount - 1 - index) ===
-                  props.currentBoardState.boardOrder
+                  currentBoardState.boardOrder
                     ? 'current'
                     : ''
                 }`}
                 onClick={() =>
-                  props.switchBoardState(
-                    ascSort ? index : props.boardStates.length - 1 - index
+                  switchBoardState(
+                    ascSort ? index : boardStates.length - 1 - index
                   )
                 }
               >
@@ -53,3 +55,13 @@ export default function CaroGameHistory(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  boardStates: get(state, 'boardStates'),
+  currentBoardState: get(state, 'currentBoardState')
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(CaroGameHistory);

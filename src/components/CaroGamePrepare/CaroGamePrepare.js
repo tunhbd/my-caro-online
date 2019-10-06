@@ -1,8 +1,22 @@
 import React from 'react';
+import { get } from 'lodash';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as reduxActions from '../../actions';
 import './CaroGamePrepare.styles.css';
 
-export default function CaroGamePrepare(props) {
-  const { className, isPlaying, currentPlayer, XPlayer, OPlayer } = props;
+function CaroGamePrepare(props) {
+  const {
+    className,
+    isPlaying,
+    currentPlayer,
+    XPlayer,
+    OPlayer,
+    actions,
+    restartGame,
+    stopGame,
+    startGame
+  } = props;
   const XPlayerIcon = '/images/caro-x.jpg';
   const OPlayerIcon = '/images/caro-o.jpg';
   const logo = '/images/caro-logo.jpg';
@@ -16,17 +30,23 @@ export default function CaroGamePrepare(props) {
         <div className="player-input">
           <img src={XPlayerIcon} alt="" />
           {isPlaying ? (
-            <input disabled onChange={e => props.setXPlayer(e.target.value)} />
+            <input
+              disabled
+              onChange={e => actions.setXPlayer(e.target.value)}
+            />
           ) : (
-            <input onChange={e => props.setXPlayer(e.target.value)} />
+            <input onChange={e => actions.setXPlayer(e.target.value)} />
           )}
         </div>
         <div className="player-input">
           <img src={OPlayerIcon} alt="" />
           {isPlaying ? (
-            <input disabled onChange={e => props.setOPlayer(e.target.value)} />
+            <input
+              disabled
+              onChange={e => actions.setOPlayer(e.target.value)}
+            />
           ) : (
-            <input onChange={e => props.setOPlayer(e.target.value)} />
+            <input onChange={e => actions.setOPlayer(e.target.value)} />
           )}
         </div>
       </div>
@@ -35,7 +55,7 @@ export default function CaroGamePrepare(props) {
           type="button"
           className="restart-button"
           onClick={() => {
-            props.restartGame();
+            restartGame();
           }}
         >
           restart
@@ -44,10 +64,10 @@ export default function CaroGamePrepare(props) {
           type="button"
           className={`play-button ${isPlaying ? 'stop' : ''}`}
           onClick={() => {
-            if (!props.isPlaying) {
-              props.restartGame();
+            if (!isPlaying) {
+              startGame();
             } else {
-              props.stopGame();
+              stopGame();
             }
           }}
         >
@@ -81,3 +101,27 @@ export default function CaroGamePrepare(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  isPlaying: get(state, 'isPlaying'),
+  XPlayer: get(state, 'XPlayer'),
+  OPlayer: get(state, 'OPlayer'),
+  currentPlayer: get(state, 'currentPlayer')
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(
+      {
+        setXPlayer: reduxActions.setXPlayer,
+        setOPlayer: reduxActions.setOPlayer
+      },
+      dispatch
+    )
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CaroGamePrepare);
