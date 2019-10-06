@@ -1,0 +1,8 @@
+export const SET_X_PLAYER = 'SET_X_PLAYER';
+export const SET_O_PLAYER = 'SET_O_PLAYER';
+export const SET_CURRENT_PLAYER = 'SET_CURRENT_PLAYER';
+export const SET_WINNER = 'SET_WINNER';
+export const SET_STATUS_MATCH = 'SET_STATUS_MATCH';
+export const SET_BOARD_STATES = 'SET_BOARD_STATES';
+export const SET_CURRENT_BOARD_STATE = 'SET_CURRENT_BOARD_STATE';
+export const SET_RESULT = 'SET_RESULT';
