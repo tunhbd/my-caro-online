@@ -6,21 +6,11 @@ import CaroGamePrepare from '../CaroGamePrepare/CaroGamePrepare';
 import CaroGameBoard from '../CaroGameBoard/CaroGameBoard';
 import CaroGameHistory from '../CaroGameHistory/CaroGameHistory';
 import { cloneBoard } from '../../utils/clone-board';
-import './CaroGame.styles.css';
+import { withAuth } from '../../hoc/with-auth';
 import * as reduxActions from '../../actions';
+import './CaroGame.styles.css';
 
 function CaroGame(props) {
-  // const [XPlayer, setXPlayer] = useState(null);
-  // const [OPlayer, setOPlayer] = useState(null);
-  // const [winner, setWinner] = useState(null);
-  // const [result, setResult] = useState([]);
-  // const [isPlaying, setStatusMatch] = useState(false);
-  // const [currentPlayer, setCurrentPlayer] = useState(null);
-  // const [boardStates, setBoardStates] = useState([]);
-  // const [currentBoardState, setCurrentBoardState] = useState({
-  //   boardOrder: -1,
-  //   player: null
-  // });
   const [boardIsInited, notifyBoardIdInited] = useState(false);
 
   const {
@@ -333,7 +323,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CaroGame);
+export default withAuth(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CaroGame)
+);

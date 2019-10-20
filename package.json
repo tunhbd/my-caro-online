@@ -3,20 +3,47 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.24.2",
     "lodash": "^4.17.15",
+    "node-fetch": "^2.6.0",
+    "nookies": "^2.0.8",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.1",
+    "react-router": "^5.1.2",
+    "react-router-config": "^5.1.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.1.1",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8"
   },
   "scripts": {
     "precommit": "NODE_ENV=production lint-staged",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start:dev-local": "better-npm-run start:dev-local",
+    "start:dev": "better-npm-run start:dev",
+    "start": "better-npm-run start"
+  },
+  "betterScripts": {
+    "start:dev-local": {
+      "command": "react-scripts start",
+      "env": {
+        "NODE_ENV": "development",
+        "API_HOST": "localhost:3001"
+      }
+    },
+    "start:dev": {
+      "command": "react-scripts start",
+      "env": {
+        "NODE_ENV": "development",
+        "API_HOST": ""
+      }
+    },
+    "start": {
+      "command": "react-scripts start",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -41,6 +68,7 @@
     ]
   },
   "devDependencies": {
+    "better-npm-run": "^0.1.1",
     "eslint": "^6.5.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.3.0",
