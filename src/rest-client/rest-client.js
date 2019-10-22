@@ -7,8 +7,8 @@ export class RestClient {
   }
 
   createUrl(url) {
-    console.log('api', process.env);
-    return `${process.env.API_HOST}${url}`;
+    console.log('api', process.env.REACT_APP_API_HOST);
+    return `${process.env.REACT_APP_API_HOST}${url}`;
   }
 
   createHeaders() {
