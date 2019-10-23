@@ -6,3 +6,6 @@ export const SET_STATUS_MATCH = 'SET_STATUS_MATCH';
 export const SET_BOARD_STATES = 'SET_BOARD_STATES';
 export const SET_CURRENT_BOARD_STATE = 'SET_CURRENT_BOARD_STATE';
 export const SET_RESULT = 'SET_RESULT';
+export const SIGN_IN = 'SIGN_IN';
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
+export const SIGN_IN_FAILED = 'SIGN_IN_FAILED';

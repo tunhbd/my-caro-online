@@ -7,14 +7,13 @@ export class RestClient {
   }
 
   createUrl(url) {
-    console.log('api', process.env.REACT_APP_API_HOST);
     return `${process.env.REACT_APP_API_HOST}${url}`;
   }
 
   createHeaders() {
     return {
       'Content-Type': 'application/json',
-      Authorization: this.getToken()
+      Authorization: `Bearer ${this.getToken()}`
     };
   }
 

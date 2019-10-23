@@ -4,7 +4,7 @@ import { RestClient } from '../rest-client/rest-client';
 
 export const withAuth = async OriginComponent => {
   const client = new RestClient();
-  const res = await client.asyncGet('/user/check-signed-in');
+  const res = await client.asyncGet('/user/check-authorizated');
 
   console.log('res', res);
 

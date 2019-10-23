@@ -41,3 +41,21 @@ export const setResult = result => ({
   type: actionTypes.SET_RESULT,
   payload: { result }
 });
+
+export const signIn = (username, password) => ({
+  type: actionTypes.SIGN_IN,
+  payload: {
+    username,
+    password
+  }
+});
+
+export const signInSuccess = token => ({
+  type: actionTypes.SIGN_IN_SUCCESS,
+  payload: { token }
+});
+
+export const signInFailed = () => ({
+  type: actionTypes.SIGN_IN_FAILED,
+  payload: {}
+});
