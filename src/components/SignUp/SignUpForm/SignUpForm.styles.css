@@ -1,1 +1,5 @@
 @import '~antd/dist/antd.css';
+
+.register-form-button {
+  width: 100%;
+}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { signIn } from '../../../actions';
 import './SignInForm.styles.css';
 
 class LoginForm extends React.Component {
@@ -10,17 +12,22 @@ class LoginForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {}
+
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // console.log('Received values of form: ', values);
+        this.props.actions.signIn(values.username, values.password);
       }
     });
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {
+      form: { getFieldDecorator }
+    } = this.props;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
@@ -70,6 +77,19 @@ class LoginForm extends React.Component {
 
 const WrappedLoginForm = Form.create({ name: 'login_form' })(LoginForm);
 
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(
+      {
+        signIn
+      },
+      dispatch
+    )
+  };
+};
 // ReactDOM.render(<WrappedLoginForm />, mountNode);
 
-export default WrappedLoginForm;
+export default connect(
+  null,
+  mapDispatchToProps
+)(WrappedLoginForm);

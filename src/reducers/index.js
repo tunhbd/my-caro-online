@@ -11,7 +11,11 @@ const initStates = {
   currentBoardState: {
     boardOrder: -1,
     player: null
-  }
+  },
+  user: null,
+  token: null,
+  signInSuccess: false,
+  signUpSuccess: false
 };
 
 const reducers = (state, { type, payload }) => {
@@ -55,6 +59,29 @@ const reducers = (state, { type, payload }) => {
       return {
         ...state,
         result: payload.result
+      };
+    case actionTypes.SIGN_IN_SUCCESS:
+      return {
+        ...state,
+        signInSuccess: true,
+        token: payload.token
+      };
+    case actionTypes.SIGN_UP_SUCCESS:
+      return {
+        ...state,
+        signUpSuccess: true
+      };
+    case actionTypes.GET_PROFILE_SUCCESS:
+      return {
+        ...state,
+        user: payload.user
+      };
+    case actionTypes.SIGN_OUT:
+      return {
+        ...state,
+        user: null,
+        signInSuccess: false,
+        token: null
       };
     default:
       return state || initStates;

@@ -17,18 +17,22 @@ export class RestClient {
     };
   }
 
-  asyncGet(url) {
-    return fetch(this.createUrl(url), {
+  async asyncGet(url) {
+    const res = await fetch(this.createUrl(url), {
       method: 'GET',
       headers: this.createHeaders()
     });
+
+    return res.json();
   }
 
-  asyncPost(url, data) {
-    return fetch(this.createUrl(url), {
+  async asyncPost(url, data) {
+    const res = await fetch(this.createUrl(url), {
       method: 'POST',
       headers: this.createHeaders(),
       body: JSON.stringify(data)
     });
+
+    return res.json();
   }
 }

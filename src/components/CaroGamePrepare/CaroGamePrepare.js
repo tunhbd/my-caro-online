@@ -15,7 +15,8 @@ function CaroGamePrepare(props) {
     actions,
     restartGame,
     stopGame,
-    startGame
+    startGame,
+    user
   } = props;
   const XPlayerIcon = '/images/caro-x.jpg';
   const OPlayerIcon = '/images/caro-o.jpg';
@@ -25,6 +26,14 @@ function CaroGamePrepare(props) {
     <div className={className}>
       <div className="logo">
         <img src={logo} alt="" />
+      </div>
+      <div className="user">
+        <span>
+          {get(user, 'firstname')} {get(user, 'lastname')}
+        </span>
+        <button type="button" onClick={() => actions.signOut()}>
+          Sign out
+        </button>
       </div>
       <div>
         <div className="player-input">
@@ -106,7 +115,8 @@ const mapStateToProps = state => ({
   isPlaying: get(state, 'isPlaying'),
   XPlayer: get(state, 'XPlayer'),
   OPlayer: get(state, 'OPlayer'),
-  currentPlayer: get(state, 'currentPlayer')
+  currentPlayer: get(state, 'currentPlayer'),
+  user: get(state, 'user')
 });
 
 const mapDispatchToProps = dispatch => {
@@ -114,7 +124,8 @@ const mapDispatchToProps = dispatch => {
     actions: bindActionCreators(
       {
         setXPlayer: reduxActions.setXPlayer,
-        setOPlayer: reduxActions.setOPlayer
+        setOPlayer: reduxActions.setOPlayer,
+        signOut: reduxActions.signOut
       },
       dispatch
     )

@@ -5,5 +5,5 @@ export const getCookie = field => {
 };
 
 export const updateCookie = (field, value, opt) => {
-  setCookie(null, field, value, opt);
+  setCookie(null, field, value, opt || {});
 };
