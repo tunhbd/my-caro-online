@@ -1,0 +1,6 @@
+.caro-game__board__row {
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}

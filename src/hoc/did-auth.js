@@ -1,19 +1,19 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { get } from 'lodash';
 // import { RestClient } from '../rest-client/rest-client';
 // import { getCookie } from '../utils/cookies';
 
-export const withAuth = async OriginComponent => {
+export const didAuth = async (OriginComponent, redirectUrl) => {
   class WrappedComponent extends React.Component {
     render() {
       const { token } = this.props;
 
-      return token ? (
+      return !token ? (
         <OriginComponent {...this.props} />
       ) : (
-        <Redirect to="/sign-in" />
+        <Redirect to={redirectUrl} />
       );
     }
   }
