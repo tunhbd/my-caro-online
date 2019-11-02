@@ -1,7 +1,9 @@
 import * as actionTypes from '../actions/action-types';
 
 const initStates = {
-  isProcessingSomething: false
+  isProcessing: false,
+  error: null,
+  systemMessage: null
 };
 
 export default (state = initStates, { type, payload }) => {
@@ -9,12 +11,35 @@ export default (state = initStates, { type, payload }) => {
     case actionTypes.PROCESS_SOMETHING:
       return {
         ...state,
-        isProcessingSomething: true
+        isProcessing: true
       };
-    case actionTypes.DONE_PROCESS_SOMETHING:
+    case actionTypes.PROCESS_SOMETHING_DONE:
       return {
         ...state,
-        isProcessingSomething: false
+        isProcessing: false
+      };
+    case actionTypes.NOTIFY_ERROR:
+      return {
+        ...state,
+        error: payload.error
+      };
+    case actionTypes.NOTIFY_ERROR_DONE:
+      return {
+        ...state,
+        error: null
+      };
+    case actionTypes.NOTITY_MESSAGE:
+      return {
+        ...state,
+        systemMessage: {
+          type: payload.type,
+          message: payload.message
+        }
+      };
+    case actionTypes.NOTITY_MESSAGE_DONE:
+      return {
+        ...state,
+        systemMessage: null
       };
     default:
       return { ...state };

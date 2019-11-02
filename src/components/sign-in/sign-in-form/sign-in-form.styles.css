@@ -1,0 +1,58 @@
+@import '~antd/dist/antd.css';
+
+.login-form {
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.login-form input {
+  background: rgba(0, 0, 0, 0.5);
+  outline: none;
+  border: none;
+  color: #fff;
+}
+
+.login-form input:focus {
+  box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.login-form__icon {
+  display: flex;
+  justify-content: center;
+  padding: 0px 0px 10px 0px;
+}
+
+.login-form__icon img {
+  width: 50px;
+  height: 50px;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.login-form__social-logins {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0px;
+}
+
+.login-form__social-logins__icon {
+  margin: 0px 5px;
+  cursor: pointer;
+}
+
+.login-form__register-redirect {
+  display: flex;
+  justify-content: center;
+  color: #fff;
+}
+
+.login-form__register-redirect a {
+  margin-left: 10px;
+}

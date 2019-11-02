@@ -2,14 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
-import { Spin } from 'antd';
+import { Spin, notification } from 'antd';
 import { get } from 'lodash';
+import { bindActionCreators } from 'redux';
 
-import SignInPage from '../../pages/sign-in';
-import SignUpPage from '../../pages/sign-up';
-import HomePage from '../../pages/homepage';
-import Loading from '../loading';
+import SignIn from '../sign-in';
+import SignUp from '../sign-up';
+import HomePage from '../homepage';
+import Loading from '../../commons/components/loading';
 import { withAuth } from '../../hoc/with-auth';
+import { commonActions } from '../../actions';
 import './app.css';
 
 const HomePageComponent = Loadable({
@@ -17,48 +19,58 @@ const HomePageComponent = Loadable({
   loading: Loading
 });
 
-const SignInPageComponent = Loadable({
-  loader: async () => SignInPage,
+const SignInComponent = Loadable({
+  loader: async () => SignIn,
   loading: Loading
 });
 
-const SignUpPageComponent = Loadable({
-  loader: async () => SignUpPage,
+const SignUpComponent = Loadable({
+  loader: async () => SignUp,
   loading: Loading
 });
 
 function App(props) {
-  const { isProcessingSomething } = props;
-
   return (
     <>
       <Router>
         <Switch>
           <Route path="/sign-in" exact={true}>
-            <SignInPageComponent />
+            <SignInComponent />
           </Route>
           <Route path="/sign-up" exact={true}>
-            <SignUpPageComponent />
+            <SignUpComponent />
           </Route>
           <Route path="/">
             <HomePageComponent />
           </Route>
         </Switch>
       </Router>
-      {isProcessingSomething ? (
+      {/* {isProcessing ? (
         <div className="processing-something">
           <Spin size="large" />
         </div>
-      ) : null}
+      ) : null} */}
     </>
   );
 }
 
 const mapStateToProps = state => ({
-  isProcessingSomething: get(state, ['commonReducer', 'isProcessingSomething'])
+  isProcessingSomething: get(state, ['commonReducer', 'isProcessingSomething']),
+  systemMessage: get(state, ['commonReducer', 'systemMessage'])
 });
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(
+      {
+        notifyMessageDone: commonActions.notifyMessageDone
+      },
+      dispatch
+    )
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(App);

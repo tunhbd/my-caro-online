@@ -7,6 +7,7 @@
     "@material-ui/icons": "^4.5.1",
     "antd": "^3.24.2",
     "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
     "nookies": "^2.0.8",
     "react": "^16.9.0",
@@ -32,21 +33,21 @@
       "command": "react-scripts start --env=jsdom",
       "env": {
         "REACT_APP_NODE_ENV": "development",
-        "REACT_APP_API_HOST": "localhost:3001"
+        "REACT_APP_API_HOST": "http://localhost:3001"
       }
     },
     "start:dev": {
       "command": "react-scripts start",
       "env": {
         "REACT_APP_NODE_ENV": "development",
-        "REACT_APP_API_HOST": "http://my-api.openode.io"
+        "REACT_APP_API_HOST": "https://my-caro-online-api.herokuapp.com"
       }
     },
     "start": {
       "command": "react-scripts start",
       "env": {
         "REACT_APP_NODE_ENV": "production",
-        "REACT_APP_API_HOST": "http://my-api.openode.io"
+        "REACT_APP_API_HOST": "https://my-caro-online-api.herokuapp.com"
       }
     }
   },

@@ -1,0 +1,83 @@
+:root {
+  --right-section-width: 200px;
+  --avatar-dimension: 50px;
+  --section-distance: 20px;
+  --main-background: #9b9b9b;
+}
+
+.signed-in-layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 5px;
+  justify-content: space-around;
+  background: url('/images/caro-background.jpg');
+}
+
+.signed-in-layout__left-section {
+  width: calc(100% - (var(--right-section-width) + var(--section-distance)));
+  height: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--main-background);
+}
+
+.signed-in-layout__left-section__content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.signed-in-layout__right-section {
+  width: var(--right-section-width);
+  height: 100%;
+  padding: 20px;
+  background: var(--main-background);
+  box-shadow: 0px 0px 2px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.signed-in-layout__right-section__user-menu {
+  width: 100%;
+  height: auto;
+}
+
+.signed-in-layout__right-section__user-menu__avatar {
+  width: 100%;
+  height: var(--avatar-dimension);
+  display: flex;
+  justify-content: center;
+}
+
+.signed-in-layout__right-section__user-menu__avatar img {
+  width: var(--avatar-dimension);
+  height: var(--avatar-dimension);
+  border-radius: 50%;
+  box-shadow: 0px 0px 3px 2px rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+.signed-in-layout__right-section__user-menu__name {
+  text-align: center;
+  color: rgb(83, 6, 6);
+  font-weight: bold;
+}
+
+.signed-in-layout__right-section__user-menu__menu {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 20px;
+}
+
+.signed-in-layout__right-section__user-menu__menu__item {
+  margin: 10px 0px;
+}
+
+.signed-in-layout__right-section__user-menu__menu__item a {
+  width: 100%;
+}
+
+.signed-in-layout__right-section__user-menu__menu__item a button {
+  width: 100%;
+}
