@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Icon, Modal } from 'antd';
+import { Upload, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { get } from 'lodash';
@@ -59,14 +59,14 @@ class Avatar extends React.Component {
     } = this.props;
     console.log('props', this.props);
 
-    const { previewImage, previewVisible, fileList } = this.state;
+    // const { previewImage, previewVisible, fileList } = this.state;
 
-    const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
+    // const uploadButton = (
+    //   <div>
+    //     <Icon type="plus" />
+    //     <div className="ant-upload-text">Upload</div>
+    //   </div>
+    // );
 
     return (
       <div className="profile-avatar">

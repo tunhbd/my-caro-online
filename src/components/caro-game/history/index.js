@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
+import { bindActionCreators } from 'redux';
+
 import './history.styles.css';
+import { gameActions } from '../../../actions';
 
 function CaroGameHistory(props) {
-  const { boardStates, className, switchBoardState, currentBoardState } = props;
+  const { boardStates, currentBoardState } = props;
   const [ascSort, sortAsc] = useState(true);
   const boardStateCount = boardStates.length;
 
+  const switchBoardState = boardOrder => {
+    props.actions.setCurrentBoardState({ boardOrder });
+  };
+
   return (
-    <div className={className}>
+    <div className="history-container">
       <div className="history-sort">
         <button
           type="button"
@@ -57,11 +64,20 @@ function CaroGameHistory(props) {
 }
 
 const mapStateToProps = state => ({
-  boardStates: get(state, 'boardStates'),
-  currentBoardState: get(state, 'currentBoardState')
+  boardStates: get(state, ['gameReducer', 'boardStates']),
+  currentBoardState: get(state, ['gameReducer', 'currentBoardState'])
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      setCurrentBoardState: gameActions.setCurrentBoardState
+    },
+    dispatch
+  )
 });
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(CaroGameHistory);

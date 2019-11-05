@@ -1,6 +1,6 @@
 .caro-game__board__row__col {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   margin: 1px;
   background: #cccccc;
   cursor: pointer;

@@ -3,5 +3,8 @@
   "editor.tabSize": 2,
   "eslint.enable": true,
   "eslint.lintTask.enable": true,
-  "eslint.autoFixOnSave": true
+  "eslint.autoFixOnSave": true,
+  "standard.autoFixOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
-import { Spin, notification } from 'antd';
+// import { Spin, notification } from 'antd';
 import { get } from 'lodash';
 import { bindActionCreators } from 'redux';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, DatePicker, Form, Input, Icon, Select, Modal } from 'antd';
+import { Button, DatePicker, Form, Input, Icon, Select } from 'antd';
 import moment from 'moment';
 import { get } from 'lodash';
 

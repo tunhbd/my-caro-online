@@ -1,9 +1,22 @@
+.history-container {
+  height: 50%;
+  width: 100%;
+}
+
+.history-sort {
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .history {
   list-style-type: none;
   width: 100%;
-  height: auto;
+  height: calc(100% - 40px);
   padding: 5px;
   box-sizing: border-box;
+  overflow: auto;
 }
 
 .history__item {

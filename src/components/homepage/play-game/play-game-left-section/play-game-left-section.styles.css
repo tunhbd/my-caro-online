@@ -1,0 +1,44 @@
+:root {
+  --player-list-height: 100px;
+}
+
+.play-game__left-section {
+  width: 80%;
+  height: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.play-game__left-section__player-list {
+  width: 100%;
+  height: var(--player-list-height);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.play-game__left-section__player-list__vs {
+  width: 50px;
+  height: 50px;
+}
+
+.play-game__left-section__game-board {
+  width: auto;
+  /* height: calc(100% - var(--player-list-height)); */
+  height: auto;
+  position: relative;
+  margin: auto;
+}
+
+.play-game__left-section__game-board__prepare {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

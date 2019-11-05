@@ -1,7 +1,7 @@
 import * as actionTypes from './action-types';
 import { RestClient } from '../rest-client/rest-client';
 import { updateCookie, getCookie, deleteCookie } from '../utils/cookies';
-import { notifyError, notifyMessage } from './common-actions';
+import { notifyError } from './common-actions';
 import { notityMessage } from '../utils/notification';
 
 export const checkAuthorizated = () => dispatch => {
