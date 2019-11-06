@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { DEFAULT_AVATAR } from '../../../../../constants';
 import './chat-box.styles.css';
+import { notifyMessage } from '../../../../../utils/notification';
 
 const { TextArea } = Input;
 class ChatBox extends React.Component {
@@ -15,7 +16,14 @@ class ChatBox extends React.Component {
   }
 
   sendMessage() {
+    const { vsPlayer } = this.props;
+
     const text = this.messageBox.textAreaRef.value;
+
+    if (!vsPlayer) {
+      notifyMessage({ type: 'WARN', message: 'You have not found player' });
+      return;
+    }
 
     if (text !== '') {
       this.props.sendMessage(text);

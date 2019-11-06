@@ -1,6 +1,6 @@
 import { notification } from 'antd';
 
-export const notityMessage = msg => {
+export const notifyMessage = msg => {
   if (msg.type === 'SUCCESS') {
     notification.success({
       description: msg.message,
@@ -8,6 +8,11 @@ export const notityMessage = msg => {
     });
   } else if (msg.type === 'ERROR') {
     notification.error({
+      description: msg.message,
+      duration: 3
+    });
+  } else if (msg.type === 'WARN') {
+    notification.warn({
       description: msg.message,
       duration: 3
     });

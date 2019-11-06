@@ -23,7 +23,8 @@ const initStates = {
   symbol: null,
   chatMessages: [],
   notifyResult: false,
-  isWinner: false
+  isWinner: false,
+  isRequestingPlayer: false
 };
 
 const gameReducer = (state, { type, payload }) => {
@@ -179,18 +180,37 @@ const gameReducer = (state, { type, payload }) => {
       return {
         ...state,
         notifyResult: true,
-        isWinner: true
+        isWinner: true,
+        isDraw: false
       };
     case actionTypes.NOTIFY_LOSER:
       return {
         ...state,
         notifyResult: true,
-        isWinner: false
+        isWinner: false,
+        isDraw: false
       };
     case actionTypes.SLICE_BOARD_STATES:
       return {
         ...state,
         boardStates: state.boardStates.slice(payload.start, payload.end)
+      };
+    case actionTypes.REQUEST_PLAYER:
+      return {
+        ...state,
+        isRequestingPlayer: true
+      };
+    case actionTypes.REQUEST_PLAYER_DONE:
+      return {
+        ...state,
+        isRequestingPlayer: false
+      };
+    case actionTypes.NOTIFY_DRAW:
+      return {
+        ...state,
+        notifyResult: true,
+        isDraw: true,
+        isWinner: false
       };
     default:
       return state || initStates;

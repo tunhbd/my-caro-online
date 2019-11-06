@@ -18,17 +18,25 @@ class ResultNotification extends React.Component {
   }
 
   render() {
-    const { isWinner, notifyResult } = this.props;
+    const { isWinner, notifyResult, isDraw } = this.props;
 
     return !notifyResult ? null : (
       <div className="result-notification">
         <div className="result-notification__content">
           <img
-            src={`/images/${isWinner ? 'caro-win.jpg' : 'caro-lose.jpg'}`}
+            src={`/images/${
+              isDraw
+                ? 'caro-draw.jpg'
+                : isWinner
+                ? 'caro-win.jpg'
+                : 'caro-lose.jpg'
+            }`}
             alt="icon"
           />
           <span>
-            {isWinner
+            {isDraw
+              ? 'Oh, this match is draw'
+              : isWinner
               ? 'Congraduate!!! You won this match'
               : 'Oh, unfortunate!!! You can not win this match'}
           </span>
@@ -43,6 +51,7 @@ class ResultNotification extends React.Component {
 
 const mapStateToProps = state => ({
   isWinner: get(state, ['gameReducer', 'isWinner']),
+  isDraw: get(state, ['gameReducer', 'isDraw']),
   notifyResult: get(state, ['gameReducer', 'notifyResult'])
 });
 

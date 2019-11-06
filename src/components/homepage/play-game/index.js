@@ -3,12 +3,14 @@ import io from 'socket.io-client';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
+import { Modal, Spin } from 'antd';
 
 import PlayGameLeftSection from './play-game-left-section';
 import PlayGameRightSection from './play-game-right-section';
 import { gameActions } from '../../../actions';
 import { DEFAULT_AVATAR } from '../../../constants';
 import { cloneBoard } from '../../../utils/clone-board';
+import { notifyMessage } from '../../../utils/notification';
 import './play-game.styles.css';
 import ResultNotification from '../../result-notification';
 
@@ -23,6 +25,19 @@ class Fighting extends React.Component {
     this.startGame = this.startGame.bind(this);
     this.chooseCell = this.chooseCell.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.requestDraw = this.requestDraw.bind(this);
+    this.requestLose = this.requestLose.bind(this);
+    this.requestUndo = this.requestUndo.bind(this);
+    this.confirmDraw = this.confirmDraw.bind(this);
+    this.confirmLose = this.confirmLose.bind(this);
+    this.confirmUndo = this.confirmUndo.bind(this);
+
+    this.state = {
+      confirmRequest: false,
+      contentConfirmRequest: '',
+      ok: null,
+      cancel: null
+    };
   }
 
   componentDidMount() {
@@ -111,12 +126,28 @@ class Fighting extends React.Component {
     this.socket.on('got winner', ({ id, result }) => {
       console.log('got winner');
       actions.stopGame();
-      actions.setResult(result);
-      if (id === this.socket.id) {
+      actions.setResult(result || []);
+      this.socket.emit('finish match', { roomId: this.props.room });
+
+      if (!id) {
+        actions.notifyDraw();
+      } else if (id === this.socket.id) {
         actions.notifyWinner();
       } else {
         actions.notifyLoser();
       }
+    });
+
+    this.socket.on('draw', () => {
+      this.confirmDraw();
+    });
+
+    this.socket.on('lose', () => {
+      this.confirmLose();
+    });
+
+    this.socket.on('undo', () => {
+      this.confirmUndo();
     });
 
     this.socket.on('chat', ({ message }) => {
@@ -187,6 +218,179 @@ class Fighting extends React.Component {
     }
   }
 
+  requestDraw() {
+    const { room, isPlaying, actions, myTurn } = this.props;
+
+    if (!isPlaying) {
+      notifyMessage({ type: 'WARN', message: 'Match has not began' });
+    }
+
+    // if (myTurn) {
+    this.socket.emit('draw', { roomId: room });
+    actions.requestPlayer();
+    this.socket.on('confirm draw', ({ confirm }) => {
+      actions.requestPlayerDone();
+
+      if (!confirm) {
+        notifyMessage({
+          type: 'WARN',
+          message: 'Your draw request was not accepted'
+        });
+      }
+    });
+    // } else {
+    //   notifyMessage({ type: 'WARN', message: 'It is not your turn' })
+    // }
+  }
+
+  confirmDraw() {
+    const { room } = this.props;
+
+    this.setState({
+      confirmRequest: true,
+      contentConfirmRequest: 'Your player want to be draw?',
+      ok: () => {
+        this.socket.emit('confirm draw', { roomId: room, confirm: true });
+        this.setState({
+          confirmRequest: false,
+          contentConfirmRequest: '',
+          ok: null,
+          cancel: null
+        });
+      },
+      cancel: () => {
+        this.socket.emit('confirm draw', { roomId: room, confirm: false });
+        this.setState({
+          confirmRequest: false,
+          contentConfirmRequest: '',
+          ok: null,
+          cancel: null
+        });
+      }
+    });
+  }
+
+  requestLose() {
+    const { room, isPlaying, myTurn, actions } = this.props;
+
+    if (!isPlaying) {
+      notifyMessage({ type: 'WARN', message: 'Match has not began' });
+    }
+
+    // if (myTurn) {
+    this.socket.emit('lose', { roomId: room });
+    actions.requestPlayer();
+    this.socket.on('confirm lose', ({ confirm }) => {
+      actions.requestPlayerDone();
+
+      if (!confirm) {
+        notifyMessage({
+          type: 'WARN',
+          message: 'Your lose request was not accepted'
+        });
+      }
+    });
+    // } else {
+    //   notifyMessage({ type: 'WARN', message: 'It is not your turn' })
+    // }
+  }
+
+  confirmLose() {
+    const { room } = this.props;
+
+    this.setState({
+      confirmRequest: true,
+      contentConfirmRequest: 'Your player want to be lose?',
+      ok: () => {
+        this.socket.emit('confirm lose', { roomId: room, confirm: true });
+        this.setState({
+          confirmRequest: false,
+          contentConfirmRequest: '',
+          ok: null,
+          cancel: null
+        });
+      },
+      cancel: () => {
+        this.socket.emit('confirm lose', { roomId: room, confirm: false });
+        this.setState({
+          confirmRequest: false,
+          contentConfirmRequest: '',
+          ok: null,
+          cancel: null
+        });
+      }
+    });
+  }
+
+  requestUndo() {
+    const { room, isPlaying, myTurn, actions, currentBoardState } = this.props;
+
+    if (!isPlaying) {
+      notifyMessage({ type: 'WARN', message: 'Match has not began' });
+      return;
+    }
+
+    if (myTurn) {
+      this.socket.emit('undo', { roomId: room });
+      actions.requestPlayer();
+      this.socket.on('confirm undo', ({ confirm }) => {
+        actions.requestPlayerDone();
+
+        if (confirm) {
+          if (currentBoardState.boardOrder > 0) {
+            actions.sliceBoardStates(0, currentBoardState.boardOrder - 1);
+            actions.setCurrentBoardState({
+              boardOrder: currentBoardState.boardOrder - 2
+            });
+            // actions.outTurn()
+          }
+        } else {
+          notifyMessage({
+            type: 'WARN',
+            message: 'Your undo request was not accepted'
+          });
+        }
+      });
+    } else {
+      notifyMessage({ type: 'WARN', message: 'It is not your turn' });
+    }
+  }
+
+  confirmUndo() {
+    const { room, actions, currentBoardState } = this.props;
+
+    this.setState({
+      confirmRequest: true,
+      contentConfirmRequest: 'Your player want to undo?',
+      ok: () => {
+        if (currentBoardState.boardOrder > 0) {
+          actions.sliceBoardStates(0, currentBoardState.boardOrder - 1);
+          actions.setCurrentBoardState({
+            boardOrder: currentBoardState.boardOrder - 2
+          });
+          // actions.inTurn()
+        }
+
+        this.socket.emit('confirm undo', { roomId: room, confirm: true });
+        this.setState({
+          confirmRequest: false,
+          contentConfirmRequest: '',
+          ok: null,
+          cancel: null
+        });
+      },
+      cancel: () => {
+        this.socket.emit('confirm undo', { roomId: room, confirm: false });
+        this.setState({
+          confirmRequest: false,
+          contentConfirmRequest: '',
+          ok: null,
+          cancel: null
+        });
+      }
+    });
+  }
+
   sendMessage(text) {
     const { actions, room } = this.props;
 
@@ -195,7 +399,8 @@ class Fighting extends React.Component {
   }
 
   render() {
-    // const { findingPlayer, isPlaying, playOnline } = this.props;
+    const { isRequestingPlayer } = this.props;
+    const { confirmRequest, contentConfirmRequest, ok, cancel } = this.state;
 
     return (
       <div className="play-game">
@@ -204,8 +409,35 @@ class Fighting extends React.Component {
           startGame={this.startGame}
           chooseCell={this.chooseCell}
         />
-        <PlayGameRightSection sendMessage={this.sendMessage} />
+        <PlayGameRightSection
+          sendMessage={this.sendMessage}
+          requestDraw={this.requestDraw}
+          requestLose={this.requestLose}
+          requestUndo={this.requestUndo}
+        />
         <ResultNotification />
+        {confirmRequest ? (
+          <Modal title="Basic Modal" visible onOk={ok} onCancel={cancel}>
+            {contentConfirmRequest}
+          </Modal>
+        ) : null}
+        {isRequestingPlayer ? (
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'fixed',
+              top: '0',
+              left: '0',
+              background: 'rgba(0,0,0,0.3)'
+            }}
+          >
+            Waiting player ready... <Spin size="large" />
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -213,13 +445,15 @@ class Fighting extends React.Component {
 
 const mapStateToProps = state => ({
   isPlaying: get(state, ['gameReducer', 'isPlaying']),
+  myTurn: get(state, ['gameReducer', 'myTurn']),
   findingPlayer: get(state, ['gameReducer', 'findingPlayer']),
   playOnline: get(state, ['gameReducer', 'playOnline']),
   profile: get(state, ['authReducer', 'profile']),
   room: get(state, ['gameReducer', 'room']),
   boardStates: get(state, ['gameReducer', 'boardStates']),
   currentBoardState: get(state, ['gameReducer', 'currentBoardState']),
-  symbol: get(state, ['gameReducer', 'symbol'])
+  symbol: get(state, ['gameReducer', 'symbol']),
+  isRequestingPlayer: get(state, ['gameReducer', 'isRequestingPlayer'])
 });
 
 const mapDispatchToProps = dispatch => {
@@ -243,8 +477,11 @@ const mapDispatchToProps = dispatch => {
         replaceTurnFirstBoardState: gameActions.replaceTurnFirstBoardState,
         notifyWinner: gameActions.notifyWinner,
         notifyLoser: gameActions.notifyLoser,
+        notifyDraw: gameActions.notifyDraw,
         sliceBoardStates: gameActions.sliceBoardStates,
-        addChatMessage: gameActions.addChatMessage
+        addChatMessage: gameActions.addChatMessage,
+        requestPlayer: gameActions.requestPlayer,
+        requestPlayerDone: gameActions.requestPlayerDone
       },
       dispatch
     )

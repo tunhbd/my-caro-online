@@ -143,7 +143,22 @@ export const notifyLoser = () => ({
   payload: {}
 });
 
+export const notifyDraw = () => ({
+  type: actionTypes.NOTIFY_DRAW,
+  payload: {}
+});
+
 export const sliceBoardStates = (start, end) => ({
   type: actionTypes.SLICE_BOARD_STATES,
   payload: { start, end }
+});
+
+export const requestPlayer = () => ({
+  type: actionTypes.REQUEST_PLAYER,
+  payload: {}
+});
+
+export const requestPlayerDone = () => ({
+  type: actionTypes.REQUEST_PLAYER_DONE,
+  payload: {}
 });

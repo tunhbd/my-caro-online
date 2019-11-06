@@ -2,7 +2,7 @@ import * as actionTypes from './action-types';
 import { RestClient } from '../rest-client/rest-client';
 import { updateCookie, getCookie, deleteCookie } from '../utils/cookies';
 import { notifyError } from './common-actions';
-import { notityMessage } from '../utils/notification';
+import { notifyMessage } from '../utils/notification';
 
 export const checkAuthorizated = () => dispatch => {
   const client = new RestClient();
@@ -189,7 +189,7 @@ export const updateProfile = data => async dispatch => {
       dispatch(processAuthDone());
       if (res.error) {
         // return dispatch(notifyError(res.error));
-        return notityMessage({
+        return notifyMessage({
           type: 'ERROR',
           message: 'Have some error'
         });
@@ -200,7 +200,7 @@ export const updateProfile = data => async dispatch => {
       }
 
       // dispatch(notifyError('Can not update your profile'));
-      return notityMessage({
+      return notifyMessage({
         type: 'ERROR',
         message: 'Can not update your profile'
       });
@@ -208,7 +208,7 @@ export const updateProfile = data => async dispatch => {
     .catch(err => {
       dispatch(processAuthDone());
       // dispatch(notifyError(err));
-      return notityMessage({
+      return notifyMessage({
         type: 'ERROR',
         message: 'Have some error'
       });
@@ -255,7 +255,7 @@ export const changePassword = password => async dispatch => {
       dispatch(processAuthDone());
       if (res.error) {
         // return dispatch(notifyMessage('ERROR', res.error));
-        return notityMessage({
+        return notifyMessage({
           type: 'ERROR',
           message: 'Having some error'
         });
@@ -263,7 +263,7 @@ export const changePassword = password => async dispatch => {
 
       if (res.data) {
         dispatch(changePasswordSuccess(res.data.profile));
-        return notityMessage({
+        return notifyMessage({
           type: 'SUCCESS',
           message: 'Change password successfully'
         });
@@ -271,7 +271,7 @@ export const changePassword = password => async dispatch => {
       }
 
       // dispatch(notifyMessage('ERROR', 'Can not update your profile'));
-      notityMessage({
+      notifyMessage({
         type: 'ERROR',
         message: 'Can not change your password'
       });

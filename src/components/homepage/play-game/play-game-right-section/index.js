@@ -9,15 +9,27 @@ import './play-game-right-section.styles.css';
 
 class PlayGameRightSection extends React.Component {
   render() {
-    const { sendMessage, playOnline } = this.props;
+    const {
+      sendMessage,
+      playOnline,
+      requestUndo,
+      requestLose,
+      requestDraw
+    } = this.props;
 
     return (
       <div className="play-game__right-section">
         {playOnline ? <ChatBox sendMessage={sendMessage} /> : <History />}
         <div className="play-game__right-section__buttons">
-          <Button type="primary">I want to undo</Button>
-          <Button type="primary">Let`s draw</Button>
-          <Button type="primary">I lose</Button>
+          <Button type="primary" onClick={requestUndo}>
+            I want to undo
+          </Button>
+          <Button type="primary" onClick={requestDraw}>
+            Let`s draw
+          </Button>
+          <Button type="primary" onClick={requestLose}>
+            I lose
+          </Button>
         </div>
       </div>
     );
