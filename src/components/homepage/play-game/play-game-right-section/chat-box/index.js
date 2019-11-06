@@ -8,15 +8,35 @@ import './chat-box.styles.css';
 
 const { TextArea } = Input;
 class ChatBox extends React.Component {
+  constructor() {
+    super();
+
+    this.sendMessage = this.sendMessage.bind(this);
+  }
+
+  sendMessage() {
+    const text = this.messageBox.textAreaRef.value;
+
+    if (text !== '') {
+      this.props.sendMessage(text);
+      this.messageBox.textAreaRef.value = '';
+    }
+  }
+
   render() {
-    const { chatMessages, profile, vsPlayer, sendMessage } = this.props;
+    const { chatMessages, profile, vsPlayer } = this.props;
 
     return (
       <div className="chat-box">
         <div className="chat-box__message-list">
           {chatMessages.map((msg, index) => {
             return (
-              <div className="chat-box__message-list__item" key={index}>
+              <div
+                className={`chat-box__message-list__item ${
+                  msg.mine ? '' : 'of-player'
+                }`}
+                key={index}
+              >
                 <img
                   src={
                     (msg.mine ? profile.avatar : vsPlayer.avatar) ||
@@ -25,7 +45,7 @@ class ChatBox extends React.Component {
                   alt="avatar"
                 />
                 <div className="chat-box__message-list__item__message">
-                  {msg.text}
+                  <span>{msg.text}</span>
                 </div>
               </div>
             );
@@ -33,12 +53,17 @@ class ChatBox extends React.Component {
         </div>
         <div className="chat-box__message-typing-box">
           <TextArea
-            rows={2}
+            className="typing-box"
+            rows={1}
             ref={dom => {
               this.messageBox = dom;
             }}
           />
-          <Button type="default" onClick={sendMessage}>
+          <Button
+            className="send-button"
+            type="default"
+            onClick={this.sendMessage}
+          >
             Send
           </Button>
         </div>
@@ -49,7 +74,7 @@ class ChatBox extends React.Component {
 
 const mapStateToProps = state => ({
   chatMessages: get(state, ['gameReducer', 'chatMessages']),
-  profile: get(state, ['gameReducer', 'profile']),
+  profile: get(state, ['authReducer', 'profile']),
   vsPlayer: get(state, ['gameReducer', 'vsPlayer'])
 });
 

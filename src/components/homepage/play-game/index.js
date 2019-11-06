@@ -22,6 +22,7 @@ class Fighting extends React.Component {
     this.nextTurn = this.nextTurn.bind(this);
     this.startGame = this.startGame.bind(this);
     this.chooseCell = this.chooseCell.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   componentDidMount() {
@@ -202,8 +203,8 @@ class Fighting extends React.Component {
           findPlayer={this.findPlayer}
           startGame={this.startGame}
           chooseCell={this.chooseCell}
-        />{' '}
-        <PlayGameRightSection />
+        />
+        <PlayGameRightSection sendMessage={this.sendMessage} />
         <ResultNotification />
       </div>
     );
@@ -242,7 +243,8 @@ const mapDispatchToProps = dispatch => {
         replaceTurnFirstBoardState: gameActions.replaceTurnFirstBoardState,
         notifyWinner: gameActions.notifyWinner,
         notifyLoser: gameActions.notifyLoser,
-        sliceBoardStates: gameActions.sliceBoardStates
+        sliceBoardStates: gameActions.sliceBoardStates,
+        addChatMessage: gameActions.addChatMessage
       },
       dispatch
     )

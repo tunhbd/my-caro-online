@@ -1,4 +1,15 @@
 .play-game__right-section {
   width: 20%;
   height: 100%;
+  padding: 10px;
+}
+
+.play-game__right-section__buttons {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 50px;
+}
+
+.play-game__right-section__buttons button {
+  margin: 5px 0px;
 }
