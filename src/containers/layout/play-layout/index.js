@@ -27,6 +27,7 @@ class PlayLayout extends React.Component {
                 e.preventDefault();
               } else {
                 actions.resetGameState();
+                actions.playWithComputer();
               }
             }}
             className="play-layout__content__back-home-button"
@@ -47,7 +48,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      resetGameState: gameActions.resetGameState
+      resetGameState: gameActions.resetGameState,
+      playWithComputer: gameActions.playWithComputer
     },
     dispatch
   )
