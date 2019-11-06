@@ -6,6 +6,7 @@
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
     "antd": "^3.24.2",
+    "better-npm-run": "^0.1.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
@@ -22,8 +23,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
-    "better-npm-run": "^0.1.1"
+    "socket.io-client": "^2.3.0"
   },
   "scripts": {
     "precommit": "NODE_ENV=production lint-staged",
